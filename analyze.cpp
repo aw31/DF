@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <cstdio>
+#include <sstream>
 using namespace std;
 
 struct grid{
@@ -15,23 +17,31 @@ struct grid{
 
 int daynum;
 
-int main(){
+void check(int day){
 
+	stringstream file;
+	file << "data\\d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
+	freopen(file.str().c_str(), "r", stdin);
 	string s[30];
 	for(int i = 0; i<30; i++) cin >> s[i];
 	grid start(s);
 	for(int i = 0; i<30; i++) cin >> s[i];
 	grid ans(s);
 	cin >> daynum;
-	int mod[3] = {};
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) if(start(i,j)) mod[(i-j+3000)%3]++;
-	for(int i = 0; i<3; i++) cout << mod[i] << " ";
-	cout << endl;
-	cout << daynum%3 << endl;
-	int mod1[3] = {};
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) if(ans(i,j)) mod1[(i-j+3000)%3]++;
-	for(int i = 0; i<3; i++) cout << mod1[i] << " ";
-	cout << endl;
-	cout << (daynum+1)%3 << endl;
+
+	int c[2] = {};
+	for(int i = 0; i<30; i++){
+		for(int j = 0;j<30; j++){
+			c[(int)start(i,j)]+=(int)ans(i,j);
+		}
+	}
+	cout << c[0]/800. << " " << c[1]/100. << endl;
+
+}
+
+int main(){
+
+	int D = 18;
+	for(int i = 1; i<=D; i++) check(i);
 
 }

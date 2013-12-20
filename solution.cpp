@@ -105,11 +105,13 @@ grid solve3(grid g){
 
 grid solve4(grid g){
 	// for each cell, increments all neighboring cells by 1/8
-	// with mod 3 observation
+	// with daynum and x-y mod 3 observation
+	// with observation that a frog square is less likely to be filled next turn
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
-			if(g(i,j)){
+			if(abs(g(i,j)-1)<eps){
+				res(i,j)-=0.2;
 				for(int k = -1; k<2; k++){
 					for(int l = -1; l<2; l++){
 						if(k!=0||l!=0){
@@ -121,7 +123,7 @@ grid solve4(grid g){
 			}
 		}
 	}
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) res(i, j) = min(res(i, j), 1.);
+	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) res(i, j) = max(min(res(i, j), 1.), 0.);
 	return res;
 }
 
@@ -132,16 +134,10 @@ grid solve(grid g, int k){
 	return sol[k](g);
 }
 
+// need to finish!
 vector<int> find_map(vector<pii> a, vector<pii> b){
 	vector<int> res;
 	for(int i = 0; i<30; i++) res.push_back(i);
-	/*
-
-	Let's not print this, okay, Alex?
-
-	for(int i = 0; i<a.size(); i++) cout << a[i].first << " " << a[i].second << endl;
-
-	*/
 	return res;
 }
 
@@ -167,7 +163,7 @@ int main(){
 
 	// input is day N and day N+1
 	double avg[n_sol] = {};
-	int D = 15;
+	int D = 18;
 	for(int i = 1; i<=D; i++){
 		vector<double> v = check(i);
 		for(int j = 0; j<n_sol; j++) avg[j]+=v[j]/D;
