@@ -88,9 +88,10 @@ grid solve2(grid g){
 
 grid solve3(grid g){
 	grid res;
+	cout << daynum << endl;
 	for(int i = 0; i < 30; i++){
 		for(int j = 0; j < 30; j++){
-			if(((j-i+3000)% 3) == ((daynum) % 3)){
+			if(((j-i+3000)% 3) == ((daynum-1) % 3)){
 				res(i,j) = 0.25;
 			}
 		}
