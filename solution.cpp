@@ -91,8 +91,10 @@ grid solve3(grid g){
 	cout << daynum << endl;
 	for(int i = 0; i < 30; i++){
 		for(int j = 0; j < 30; j++){
-			if(((j-i+3000)% 3) == ((daynum-1) % 3)){
+			if(((j-i+3000)% 3) == ((daynum) % 3)){
 				res(i,j) = 0.25;
+			} else if(((j-i+3000)% 3) == ((daynum+1) % 3)){
+				res(i,j) = 0.083333;
 			}
 		}
 	}
@@ -132,3 +134,4 @@ int main(){
 	for(int i = 0; i<n_sol; i++) cout << score(ans, solve(start, i)) << endl;
 
 }
+
