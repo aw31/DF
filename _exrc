@@ -1,0 +1,81 @@
+if &cp | set nocp | endif
+let s:cpo_save=&cpo
+set cpo&vim
+cnoremap <C-F4> c
+inoremap <C-F4> c
+cnoremap <C-Tab> w
+inoremap <C-Tab> w
+imap <S-Insert> 
+cmap <S-Insert> +
+map! <C-End> <C-End>
+map! <C-Home> <C-Home>
+xnoremap  ggVG
+snoremap  gggHG
+onoremap  gggHG
+nnoremap  gggHG
+vnoremap  "+y
+noremap  
+vnoremap  :update
+nnoremap  :update
+onoremap  :update
+nmap  "+gP
+omap  "+gP
+vnoremap  "+x
+noremap  
+noremap  u
+imap ÎÔ *
+map Q gq
+nmap \a <Plug>ToggleAutoCloseMappings
+nmap gx <Plug>NetrwBrowseX
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
+noremap <Right> <Nop>
+noremap <Left> <Nop>
+noremap <Down> <Nop>
+noremap <Up> <Nop>
+onoremap <C-F4> c
+nnoremap <C-F4> c
+vnoremap <C-F4> c
+onoremap <C-Tab> w
+nnoremap <C-Tab> w
+vnoremap <C-Tab> w
+vmap <S-Insert> 
+nmap <S-Insert> "+gP
+omap <S-Insert> "+gP
+vnoremap <C-Insert> "+y
+vnoremap <S-Del> "+x
+vnoremap <BS> d
+nmap <C-End> <C-End>
+vmap <C-End> <C-End>
+nmap <C-Home> <C-Home>
+vmap <C-Home> <C-Home>
+cnoremap  gggHG
+inoremap  gggHG
+inoremap  :update
+inoremap  u
+cmap  +
+inoremap  
+inoremap  u
+vmap ÎØ "*d
+vmap Î× "*d
+vmap ÎÕ "*y
+vmap ÎÔ "-d"*P
+nmap ÎÔ "*P
+let &cpo=s:cpo_save
+unlet s:cpo_save
+set autoindent
+set backspace=indent,eol,start
+set diffexpr=MyDiff()
+set helplang=En
+set history=50
+set hlsearch
+set incsearch
+set keymodel=startsel,stopsel
+set makeprg=g++\ -g\ %
+set ruler
+set selection=exclusive
+set selectmode=mouse,key
+set shiftwidth=4
+set tabstop=4
+set whichwrap=b,s,<,>,[,]
+set nowritebackup
+" vim: set ft=vim :

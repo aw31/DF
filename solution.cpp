@@ -1,3 +1,4 @@
+#include "grid.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -8,46 +9,11 @@
 using namespace std;
 
 typedef pair<int,int> pii;
+typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
 
 int daynum;
-
-struct grid{
-	double a[32][32];
-	grid(){memset(a, 0, sizeof(a));}
-	grid(string arr[]){
-		for(int i = 0; i<30; i++) for(int j = 0; j<arr[i].size(); j+=2) a[i+1][j/2+1] = (arr[i][j]=='1');
-	}
-	double operator()(int x, int y) const {return a[x+1][y+1];}
-	double& operator()(int x, int y){return a[x+1][y+1];}
-
-};
-
-vector<pii> get_frogs(grid g){
-	vector<pii> res;
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) if(abs(g(i, j)-1)<eps) res.push_back(pii(i, j));
-	return res;
-}
-
-typedef grid (*solve_func) (grid g);
-
-ostream& operator<<(ostream &o, grid g){
-	for(int i = 0; i<30; i++){
-		for(int j = 0; j<29; j++) o << g(i,j) << ',';
-		o << g(i,29) << '\n';
-	}
-	return o;
-}
-
-const double min_score = -1000;
-
-double score(grid a, grid b){
-	double s = 0;
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) s+=(a(i,j)-b(i,j))*(a(i,j)-b(i,j));
-	double k = max(min_score, 20-sqrt(s));
-	return k*k*(2*(k>0)-1)/4;
-}
 
 grid solve0(grid g){
 	// sets everything to 1/9
@@ -110,7 +76,7 @@ grid solve4(grid g){
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
-			if(abs(g(i,j)-1)<eps){
+			if(g(i,j)){
 				res(i,j)-=0.2;
 				for(int k = -1; k<2; k++){
 					for(int l = -1; l<2; l++){
@@ -123,12 +89,25 @@ grid solve4(grid g){
 			}
 		}
 	}
-	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) res(i, j) = max(min(res(i, j), 1.), 0.);
 	return res;
 }
 
-const int n_sol = 5;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4};
+grid solve5(grid g){
+	grid res;
+	for(int i = 0; i < 30; i++){
+		for(int j = 0; j < 30; j++){
+			if(g(i,j)){
+				res(i-1, j) += 0.33333;
+				res(i, j+1) += 0.33333;
+				res(i+1, j-1) += 0.33333;
+			}
+		}
+	}
+	return res;
+}
+
+const int n_sol = 6;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5};
 
 grid solve(grid g, int k){
 	return sol[k](g);
