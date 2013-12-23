@@ -121,6 +121,7 @@ grid solve5(grid g){
 }
 
 grid solve6(grid g){
+	// reweighting of solve4, performs better
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
