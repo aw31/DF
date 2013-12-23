@@ -24,8 +24,9 @@ ostream& operator<<(ostream &o, grid g){
 	return o;
 }
 
+// sets everything to 1/9
+// 27.94
 grid solve0(grid g){
-	// sets everything to 1/9
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++) res(i,j) = 1/9.;
@@ -34,8 +35,9 @@ grid solve0(grid g){
 	return res;
 }
 
+// for each cell, increments all neighboring cells by 1/8
+// 35.96
 grid solve1(grid g){
-	// for each cell, increments all neighboring cells by 1/8
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
@@ -52,6 +54,8 @@ grid solve1(grid g){
 	return res;
 }
 
+// for each cell, increments all side-adjacent cells by 1/4 
+// 34.23
 grid solve2(grid g){
 	grid res;
 	for(int i = 0; i<30; i++){
@@ -66,9 +70,10 @@ grid solve2(grid g){
 	return res;
 }
 
+// fail
+// 30.77
 grid solve3(grid g){
 	grid res;
-	//cout << daynum << endl;
 	for(int i = 0; i < 30; i++){
 		for(int j = 0; j < 30; j++){
 			if(((j-i+3000)% 3) == ((daynum) % 3)){
@@ -82,10 +87,11 @@ grid solve3(grid g){
 	return res;
 }
 
+// for each cell, increments all neighboring cells
+// with daynum and x-y mod 3 observation
+// with observation that a frog square is less likely to be filled next turn
+// 48.80
 grid solve4(grid g){
-	// for each cell, increments all neighboring cells
-	// with daynum and x-y mod 3 observation
-	// with observation that a frog square is less likely to be filled next turn
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
@@ -105,6 +111,8 @@ grid solve4(grid g){
 	return res;
 }
 
+// adds 1/3 to all moves that keep x-y mod 3 good
+// 43.76
 grid solve5(grid g){
 	grid res;
 	for(int i = 0; i < 30; i++){
@@ -120,8 +128,9 @@ grid solve5(grid g){
 	return res;
 }
 
+// reweighting of solve4, performs better
+// 52.88
 grid solve6(grid g){
-	// reweighting of solve4, performs better
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
