@@ -13,7 +13,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 21;
+const int D = 22;
 
 int daynum;
 
@@ -162,7 +162,7 @@ grid solve(grid g, int k){
 }
 
 grid get_next(int day, int k){
-	daynum = D+1;
+	daynum = day+1;
 	return solve(ans[day], k);
 }
 
@@ -209,11 +209,16 @@ int main(){
 	}
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
+
+	cout << check(22, 6) << endl;
+
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
 
-	stringstream image_name;
-	image_name << "images\\" << D << ".png";
-	draw(get_next(D, best), image_name.str());
+	for(int i = 1; i<=D; i++){
+		stringstream image_name;
+		image_name << "images\\" << i << ".png";
+		draw(get_next(i, best), image_name.str());
+	}
 
 }
 

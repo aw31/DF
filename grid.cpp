@@ -28,11 +28,11 @@ vector<pii> grid::get_frogs(){
 	return res;
 }
 
-double min_score = -1000;
+double min_score = 0;
 
 double score(grid a, grid b){
 	double s = 0;
 	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++) s+=(a(i,j)-b(i,j))*(a(i,j)-b(i,j));
 	double k = max(min_score, 20-sqrt(s));
-	return k*k*(2*(k>0)-1)/4;
+	return k*k/4;
 }

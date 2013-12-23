@@ -7,7 +7,7 @@
 #include <fstream>
 using namespace std;
 
-void draw(grid g, string name){
+int draw(grid g, string name){
 	char arr[900*64];
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
@@ -16,5 +16,5 @@ void draw(grid g, string name){
 			}
 		}
 	}
-	cout << stbi_write_png(name.c_str(), 240, 240, 1, arr, 240) << endl;
+	return stbi_write_png(name.c_str(), 240, 240, 1, arr, 240);
 }
