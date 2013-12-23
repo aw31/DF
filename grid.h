@@ -1,5 +1,4 @@
 #include <string>
-#include <utility>
 #include <vector>
 
 #ifndef __GRID_H_INCLUDED__
@@ -16,7 +15,6 @@ struct grid{
 	std::vector<pii> get_frogs();
 };
 
-std::ostream& operator<<(std::ostream, grid);
 double score(grid, grid);
 
 #endif

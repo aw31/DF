@@ -12,8 +12,17 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
+const int D = 21;
 
 int daynum;
+
+ostream& operator<<(ostream &o, grid g){
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<29; j++) o << (g(i,j)) << ',';
+		o << g(i,29) << '\n';
+	}
+	return o;
+}
 
 grid solve0(grid g){
 	// sets everything to 1/9
@@ -21,6 +30,7 @@ grid solve0(grid g){
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++) res(i,j) = 1/9.;
 	}
+	res.fix();
 	return res;
 }
 
@@ -38,6 +48,7 @@ grid solve1(grid g){
 			}
 		}
 	}
+	res.fix();
 	return res;
 }
 
@@ -51,6 +62,7 @@ grid solve2(grid g){
 			}
 		}
 	}
+	res.fix();
 	return res;
 }
 
@@ -66,29 +78,30 @@ grid solve3(grid g){
 			}
 		}
 	}
+	res.fix();
 	return res;
 }
 
 grid solve4(grid g){
-	// for each cell, increments all neighboring cells by 1/8
+	// for each cell, increments all neighboring cells
 	// with daynum and x-y mod 3 observation
 	// with observation that a frog square is less likely to be filled next turn
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
-			if(g(i,j)){
-				res(i,j)-=0.2;
-				for(int k = -1; k<2; k++){
-					for(int l = -1; l<2; l++){
-						if(k!=0||l!=0){
-							if((-daynum+3000)%3==(i+k-j-l+3000)%3) res(i+k, j+l)+=0.3;
-							else if((-daynum+3000)%3==(i+k-j-l+3001)%3) res(i+k, j+l)+=0.1;
-						}
-					}
-				}
+			double n_adj = 0;
+			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
+			if((-daynum+3000)%3==(i-j+3000)%3){
+				res(i, j)+=0.35*n_adj;
+				if(g(i,j)) res(i,j)-=0.3;
+			}
+			else if((-daynum+3000)%3==(i-j+3001)%3){
+				res(i, j)+=0.1*n_adj;
+				if(g(i,j)) res(i,j)-=0.1;
 			}
 		}
 	}
+	res.fix();
 	return res;
 }
 
@@ -103,52 +116,62 @@ grid solve5(grid g){
 			}
 		}
 	}
+	res.fix();
 	return res;
 }
 
 const int n_sol = 6;
 solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5};
 
+grid start[40], ans[40];
+
 grid solve(grid g, int k){
 	return sol[k](g);
 }
 
-// need to finish!
-vector<int> find_map(vector<pii> a, vector<pii> b){
-	vector<int> res;
-	for(int i = 0; i<30; i++) res.push_back(i);
-	return res;
+// returns the score of a solution on a given day
+double check(int day, int sol_num){
+	daynum = day;
+	return score(ans[day], solve(start[day], sol_num));
 }
 
-vector<double> check(int day){
+// returns average score of a solution
+double check(int sol_num){
+
+	double res = 0;
+	for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
+	return res/D;
+
+}
+
+// loads the data for a given day into start and ans
+void load(int day){
 
 	stringstream file;
 	file << "data\\d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
 	freopen(file.str().c_str(), "r", stdin);
 	string s[30];
 	for(int i = 0; i<30; i++) cin >> s[i];
-	grid start(s);
+	grid st(s);
 	for(int i = 0; i<30; i++) cin >> s[i];
-	grid ans(s);
-	cin >> daynum;
-
-	vector<double> res;
-	for(int i = 0; i<n_sol; i++) res.push_back(score(ans, solve(start, i)));
-	return res;
+	grid an(s);
+	start[day] = st;
+	ans[day] = an;
 
 }
 
 int main(){
 
-	// input is day N and day N+1
+	for(int i = 1; i<=D; i++) load(i);
+
 	double avg[n_sol] = {};
-	int D = 18;
-	for(int i = 1; i<=D; i++){
-		vector<double> v = check(i);
-		for(int j = 0; j<n_sol; j++) avg[j]+=v[j]/D;
+	for(int i = 0; i<n_sol; i++){
+		avg[i] = check(i);
 	}
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
-	cout << endl;
+	cout << endl << endl;
+	cout << score(ans[21], solve(start[21],4)) << endl;
+	cout << fixed << setprecision(3) << solve(ans[21], 4) << endl;
 
 }
 

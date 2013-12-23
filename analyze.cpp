@@ -1,19 +1,9 @@
+#include "grid.h"
 #include <iostream>
 #include <cstring>
 #include <cstdio>
 #include <sstream>
 using namespace std;
-
-struct grid{
-	double a[32][32];
-	grid(){memset(a, 0, sizeof(a));}
-	grid(string arr[]){
-		for(int i = 0; i<30; i++) for(int j = 0; j<arr[i].size(); j+=2) a[i+1][j/2+1] = (arr[i][j]=='1');
-	}
-	double operator()(int x, int y) const {return a[x+1][y+1];}
-	double& operator()(int x, int y){return a[x+1][y+1];}
-
-};
 
 int daynum;
 
@@ -29,13 +19,13 @@ void check(int day){
 	grid ans(s);
 	cin >> daynum;
 
-	int c[2] = {};
+	int mod3[3] = {};
 	for(int i = 0; i<30; i++){
 		for(int j = 0;j<30; j++){
-			c[(int)start(i,j)]+=(int)ans(i,j);
+			if(start(i,j)) mod3[(i-j+3000)%3]++;
 		}
 	}
-	cout << c[0]/800. << " " << c[1]/100. << endl;
+	cout << daynum << " " << mod3[0] << " " << mod3[1] << " " << mod3[2] << endl;
 
 }
 

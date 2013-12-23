@@ -28,14 +28,6 @@ vector<pii> grid::get_frogs(){
 	return res;
 }
 
-ostream& operator<<(ostream &o, grid g){
-	for(int i = 0; i<30; i++){
-		for(int j = 0; j<29; j++) o << (g(i,j)) << ',';
-		o << g(i,29) << '\n';
-	}
-	return o;
-}
-
 double min_score = -1000;
 
 double score(grid a, grid b){
@@ -44,4 +36,3 @@ double score(grid a, grid b){
 	double k = max(min_score, 20-sqrt(s));
 	return k*k*(2*(k>0)-1)/4;
 }
-
