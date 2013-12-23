@@ -8,7 +8,7 @@
 #include <vector>
 using namespace std;
 
-const int D = 21;
+const int D = 10;
 int daynum;
 
 grid start[40], ans[40];
@@ -21,11 +21,13 @@ grid solve(grid g, double a1, double a2, double a3, double a4){
 			double n_adj = 0;
 			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
 			if((-daynum+3000)%3==(i-j+3000)%3){
-				res(i, j)+=a1*n_adj;
-				if(g(i, j)) res(i, j)-=a3;
+				if(n_adj==2) res(i, j)+=a3;
+				else if(n_adj>=3) res(i,j)+=a1;
+				if(g(i, j)) res(i, j)-=0.4;
 			} else if((-daynum+3000)%3==(i-j+3001)%3){
-				res(i, j)+=a2*n_adj;
-				if(g(i, j)) res(i, j)-=a4;
+				if(n_adj==2) res(i,j)+=a4;
+				else if(n_adj>=3) res(i,j)+=a2;
+				if(g(i, j)) res(i, j)-=0.15;
 			}
 		}
 	}
@@ -69,10 +71,11 @@ int main(){
 
 	for(int i = 1; i<=D; i++) load(i);
 	double best = 0, bi, bj, bk, bl;
-	for(double i = 0; i<=0.5; i+=0.05){
-		for(double j = 0; j<=0.5; j+=0.05){
-			for(double k = 0; k<=0.5; k+=0.05){
-				for(double l = 0; l<=0.5; l+=0.05){
+	for(double i = 0; i<=1.0; i+=0.05){
+		cout << i <<endl;
+		for(double j = 0; j<=1.0; j+=0.05){
+			for(double k = 0; k<=1.0; k+=0.05){
+				for(double l = 0; l<=1.0; l+=0.05){
 					double s = check(i,j,k,l);
 					if(s>best){
 						best = s;

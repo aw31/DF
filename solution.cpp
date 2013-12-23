@@ -120,13 +120,39 @@ grid solve5(grid g){
 	return res;
 }
 
-const int n_sol = 6;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5};
+grid solve6(grid g){
+	grid res;
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<30; j++){
+			double n_adj = 0;
+			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
+			if((-daynum+3000)%3==(i-j+3000)%3){
+				if(n_adj==2) res(i, j)+=0.9;
+				else if(n_adj>=3) res(i,j)+=0.95;
+				if(g(i, j)) res(i, j)-=0.4;
+			} else if((-daynum+3000)%3==(i-j+3001)%3){
+				if(n_adj==2) res(i,j)+=0.2;
+				else if(n_adj>=3) res(i,j)+=0.3;
+				if(g(i, j)) res(i, j)-=0.15;
+			}
+		}
+	}
+	res.fix();
+	return res;
+}
+
+const int n_sol = 7;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6};
 
 grid start[40], ans[40];
 
 grid solve(grid g, int k){
 	return sol[k](g);
+}
+
+grid get_next(int day, int k){
+	daynum = D+1;
+	return solve(ans[day], k);
 }
 
 // returns the score of a solution on a given day
@@ -165,13 +191,14 @@ int main(){
 	for(int i = 1; i<=D; i++) load(i);
 
 	double avg[n_sol] = {};
+	int best = 0;
 	for(int i = 0; i<n_sol; i++){
 		avg[i] = check(i);
+		if(avg[i]>avg[best]) best = i;
 	}
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
-	cout << score(ans[21], solve(start[21],4)) << endl;
-	cout << fixed << setprecision(3) << solve(ans[21], 4) << endl;
+	cout << fixed << setprecision(3) << get_next(D, best) << endl;
 
 }
 
