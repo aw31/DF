@@ -1,4 +1,5 @@
 #include "grid.h"
+#include "draw.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -209,6 +210,10 @@ int main(){
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
+
+	stringstream image_name;
+	image_name << "images\\" << D << ".png";
+	draw(get_next(D, best), image_name.str());
 
 }
 

@@ -2,14 +2,18 @@ CC_OPT = -Wall -O2
 
 all: a analyze test
 
-a: grid.h grid.o solution.cpp
-	g++ $(CC_OPT) grid.o solution.cpp -o a
+a: grid.o draw.o solution.cpp
+	g++ $(CC_OPT) grid.o draw.o solution.cpp -o a
 
-analyze: grid.h grid.o analyze.cpp
-	g++ $(CC_OPT) grid.o analyze.cpp -o analyze
+analyze: grid.o draw.o analyze.cpp
+	g++ $(CC_OPT) grid.o draw.o analyze.cpp -o analyze
 
-test: grid.h grid.o test.cpp
-	g++ $(CC_OPT) grid.o test.cpp -o test
+test: grid.o draw.o test.cpp
+	g++ $(CC_OPT) grid.o draw.o test.cpp -o test
+
+draw.o: stb_image_write.h draw.h grid.o draw.cpp
+	g++ $(CC_OPT) grid.o draw.cpp -o draw.o
 
 grid.o: grid.h grid.cpp
 	g++ $(CC_OPT) -c grid.cpp -o grid.o
+
