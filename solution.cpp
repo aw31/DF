@@ -210,8 +210,6 @@ int main(){
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
 
-	cout << check(22, 6) << endl;
-
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
 
 	for(int i = 1; i<=D; i++){

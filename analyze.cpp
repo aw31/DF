@@ -19,6 +19,7 @@ void check(int day){
 	grid ans(s);
 	cin >> daynum;
 
+	vector<pii> a = start.get_frogs(), b = ans.get_frogs();
 	int mod3[3] = {};
 	for(int i = 0; i<30; i++){
 		for(int j = 0;j<30; j++){
