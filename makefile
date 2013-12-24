@@ -1,4 +1,4 @@
-CC_OPT = -Wall -O2
+CC_OPT = -Wall -O2 
 
 all: a analyze test
 

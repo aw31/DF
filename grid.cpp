@@ -10,7 +10,9 @@ grid::grid(string arr[]){
 		for(int j = 0; j<arr[i].size(); j+=2) a[i+1][j/2+1] = (arr[i][j]=='1');
 	}
 }
-double& grid::operator()(int x, int y){return a[x+1][y+1];}
+double& grid::operator()(int x, int y){
+	return x>=0&&y>=0&&x<30&&y<30?a[x+1][y+1]:a[0][0];
+}
 void grid::fix(){
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++) (*this)(i,j) = max(min((*this)(i,j), 1.), 0.);
