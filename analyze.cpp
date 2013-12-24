@@ -2,10 +2,11 @@
 #include <iostream>
 #include <cstring>
 #include <cstdio>
+#include <set>
 #include <sstream>
 using namespace std;
 
-int daynum;
+int daynum, freq[1024] = {}, tot[1024] = {};
 
 void check(int day){
 
@@ -19,20 +20,31 @@ void check(int day){
 	grid ans(s);
 	cin >> daynum;
 
-	vector<pii> a = start.get_frogs(), b = ans.get_frogs();
-	int mod3[3] = {};
 	for(int i = 0; i<30; i++){
-		for(int j = 0;j<30; j++){
-			if(start(i,j)) mod3[(i-j+3000)%3]++;
+		for(int j = 0; j<30; j++){
+			int stst = 0;
+			for(int k = -1; k<2; k++){
+				for(int l = -1; l<2; l++){
+					stst = 2*stst+start(i+k,j+l);
+				}
+			}
+			if((-daynum+3000)%3==(i-j+3000)%3){
+				stst = 2*stst+1;
+			} else if((-daynum+3000)%3==(i-j+3001)%3){
+				stst*=2;
+			} else continue;
+			tot[stst]++;
+			if(ans(i,j)) freq[stst]++;
 		}
 	}
-	cout << daynum << " " << mod3[0] << " " << mod3[1] << " " << mod3[2] << endl;
 
 }
 
 int main(){
 
-	int D = 18;
+	freopen("solve7.txt", "w", stdout);
+	int D = 23;
 	for(int i = 1; i<=D; i++) check(i);
+	for(int i = 0; i<1024; i++) cout << freq[i] << " " << tot[i] << '\n';
 
 }

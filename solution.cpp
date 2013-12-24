@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <iomanip>
 #include <sstream>
 #include <vector>
@@ -13,7 +14,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 22;
+const int D = 23;
 
 int daynum;
 
@@ -152,8 +153,27 @@ grid solve6(grid g){
 	return res;
 }
 
-const int n_sol = 7;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6};
+// computes probability that solve
+grid solve7(grid g){
+	grid res;
+	int freq[1024], tot[1024];
+	ifstream fin("solve7.txt");
+	for(int i = 0; i<1024; i++) fin >> freq[i] >> tot[i];
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<30; j++){
+			int st = 0;
+			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) st = 2*st+g(i+k,j+l); 
+			if((-daynum+3000)%3==(i-j+3000)%3) st = 2*st+1;
+			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
+			else continue;
+			res(i,j) = 1.0*freq[st]/tot[st];
+		}
+	}
+	return res;
+}
+
+const int n_sol = 8;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7};
 
 grid start[40], ans[40];
 
@@ -209,6 +229,8 @@ int main(){
 	}
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
+
+	return 0;
 
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
 
