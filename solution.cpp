@@ -14,7 +14,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 23;
+const int D = 26;
 
 int daynum;
 
