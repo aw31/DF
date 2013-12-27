@@ -182,8 +182,7 @@ grid solve7(grid g){
 			if((-daynum+3000)%3==(i-j+3000)%3) st = 2*st+1;
 			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
 			else continue;
-			if(tot[st]>1) res(i,j) = 1.0*freq[st]/tot[st];
-			else cout << "?";
+			if(tot[st]>2) res(i,j) = 1.0*freq[st]/tot[st];
 
 		}
 	}

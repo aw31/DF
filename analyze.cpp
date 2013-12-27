@@ -7,7 +7,7 @@
 using namespace std;
 
 const int D = 25;
-int daynum, freq[131072] = {}, tot[131072] = {};
+int daynum, freq[1024] = {}, tot[1024] = {};
 
 void check(int day){
 
@@ -24,8 +24,8 @@ void check(int day){
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
 			int stst = 0;
-			for(int k = -2; k<2; k++){
-				for(int l = -2; l<2; l++){
+			for(int k = -1; k<2; k++){
+				for(int l = -1; l<2; l++){
 					stst = 2*stst+start(i+k,j+l);
 				}
 			}
@@ -43,8 +43,8 @@ void check(int day){
 
 int main(){
 
-	freopen("solve7-1.txt", "w", stdout);
+	freopen("solve7.txt", "w", stdout);
 	for(int i = 1; i<=20; i++) check(i);
-	for(int i = 0; i<131072; i++) cout << freq[i] << " " << tot[i] << '\n';
+	for(int i = 0; i<1024; i++) cout << freq[i] << " " << tot[i] << '\n';
 
 }
