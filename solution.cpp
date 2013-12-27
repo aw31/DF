@@ -136,16 +136,14 @@ grid solve6(grid g){
 	grid res;
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
-			double n_adj = 0;
-			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
+			int n_adj = 0;
+			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l)+eps;
 			if((-daynum+3000)%3==(i-j+3000)%3){
-				if(n_adj==2) res(i, j)+=0.9;
-				else if(n_adj>=3) res(i,j)+=0.95;
-				if(g(i, j)) res(i, j)-=0.4;
+				if(n_adj==2) res(i, j) = 0.85-g(i,j)*0.4;
+				else if(n_adj>=3) res(i,j) = 0.95-g(i,j)*0.5;
 			} else if((-daynum+3000)%3==(i-j+3001)%3){
-				if(n_adj==2) res(i,j)+=0.2;
-				else if(n_adj>=3) res(i,j)+=0.3;
-				if(g(i, j)) res(i, j)-=0.15;
+				if(n_adj==2) res(i, j) = 0.2-g(i,j)*0.2;
+				else if(n_adj>=3) res(i,j) = 0.3-g(i,j)*0.3;
 			}
 		}
 	}
@@ -153,36 +151,34 @@ grid solve6(grid g){
 	return res;
 }
 
-// computes probability that solve
+int freq_7[1024], tot_7[1024];
+
+// if we have >4 data points about a state, computes probability that it is white
+// otherwise, uses solve6
 grid solve7(grid g){
-	grid res;
-	int freq[1024], tot[1024];
-	ifstream fin("solve7.txt");
-	for(int i = 0; i<1024; i++) fin >> freq[i] >> tot[i];
+
+	grid res, s6 = solve6(g);
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
-			double n_adj = 0;
-			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
-			if((-daynum+3000)%3==(i-j+3000)%3){
-				if(n_adj==2) res(i, j)+=0.9;
-				else if(n_adj>=3) res(i,j)+=0.95;
-				if(g(i, j)) res(i, j)-=0.4;
-			} else if((-daynum+3000)%3==(i-j+3001)%3){
-				if(n_adj==2) res(i,j)+=0.2;
-				else if(n_adj>=3) res(i,j)+=0.3;
-				if(g(i, j)) res(i, j)-=0.15;
-			}
+
 			int st = 0;
 			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) st = 2*st+g(i+k,j+l); 
 			if((-daynum+3000)%3==(i-j+3000)%3) st = 2*st+1;
 			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
 			else continue;
-			if(tot[st]>5) res(i,j) = 1.0*freq[st]/tot[st];
+
+			if(tot_7[st]>4){
+				res(i,j) = 1.0*freq_7[st]/tot_7[st];
+			} else {
+				res(i,j) = s6(i,j);
+			}
 		}
 	}
 	res.fix();
 	return res;
+
 }
+
 
 const int n_sol = 8;
 solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7};
@@ -231,9 +227,20 @@ void load(int day){
 
 }
 
+// does preprocessing for all solve functions
+void preprocess(){
+
+	// solve7
+	ifstream fin("solve7.txt");
+	for(int i = 0; i<1024; i++) fin >> freq_7[i] >> tot_7[i];
+	fin.close();
+
+}
+
 int main(){
 
 	for(int i = 1; i<=D; i++) load(i);
+	preprocess();
 
 	double avg[n_sol] = {};
 	int best = 0;
@@ -244,7 +251,17 @@ int main(){
 	for(int i = 0; i<n_sol; i++) cout << avg[i] << " ";
 	cout << endl << endl;
 
+	cout << "best solve: " << best << endl;
+	cout << endl;
+
+	// a star indicates that the day was used in the training set
+	cout << "recent scores: " << endl;
+	for(int i = D-9; i<=D; i++) cout << "    " << check(i, best) << (i%2?"":"*") << endl;
+	cout << endl;
+
+	cout << "today's submission: " << endl;
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
+	cout << endl;
 
 	for(int i = 1; i<=D; i++){
 		stringstream image_name;

@@ -9,14 +9,31 @@
 #include <vector>
 using namespace std;
 
-const int D = 23;
+const double eps = 1e-9;
+const int D = 26;
 int daynum;
 
 grid start[40], ans[40];
+int freq_7[1024], tot_7[1024];
 
 grid solve(grid g, double a1, double a2, double a3, double a4){
 
 	grid res;
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<30; j++){
+
+			int n_adj = 0;
+			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l)+eps;
+			if((-daynum+3000)%3==(i-j+3000)%3){
+				if(n_adj==2) res(i, j) = 0.85-g(i,j)*0.4;
+				else if(n_adj>=3) res(i,j) = 0.95-g(i,j)*0.5;
+			} else if((-daynum+3000)%3==(i-j+3001)%3){
+				if(n_adj==2) res(i, j) = 0.2-g(i,j)*0.2;
+				else if(n_adj>=3) res(i,j) = 0.3-g(i,j)*0.3;
+			}
+
+		}
+	}
 	res.fix();
 	return res;
 
@@ -55,13 +72,17 @@ void load(int day){
 
 int main(){
 
+	ifstream fin("solve7.txt");
+	for(int i = 0; i<1024; i++) fin >> freq_7[i] >> tot_7[i];
+	fin.close();
+
 	for(int i = 1; i<=D; i++) load(i);
 	double best = 0, bi, bj, bk, bl;
-	for(double i = 0; i<=0.2; i+=0.01){
-		cout << i <<endl;
-		for(int j = 1; j<300; j++){
-			for(double k = 0; k<=0.01; k+=0.05){
-				for(double l = 0; l<=0.01; l+=0.05){
+	for(double i = 0.0; i<=0.41; i+=0.05){
+		cout << i << endl;
+		for(double j = 0.0; j<=0.41; j+=0.05){
+			for(double k = 0.1; k<=0.51; k+=0.05){
+				for(double l = 0.1; l<=0.51; l+=0.05){
 					double s = check(i,j,k,l);
 					if(s>best){
 						best = s;
