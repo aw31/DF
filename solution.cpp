@@ -14,7 +14,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 23;
+const int D = 25;
 
 int daynum;
 
@@ -153,35 +153,43 @@ grid solve6(grid g){
 	return res;
 }
 
-// computes probability that solve
+// if we have >5 data points about a state, computes probability that it is white
+// otherwise, uses solve6
+// 54.06
 grid solve7(grid g){
+
 	grid res;
 	int freq[1024], tot[1024];
 	ifstream fin("solve7.txt");
 	for(int i = 0; i<1024; i++) fin >> freq[i] >> tot[i];
 	for(int i = 0; i<30; i++){
 		for(int j = 0; j<30; j++){
+
 			double n_adj = 0;
 			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l);
 			if((-daynum+3000)%3==(i-j+3000)%3){
-				if(n_adj==2) res(i, j)+=0.9;
-				else if(n_adj>=3) res(i,j)+=0.95;
-				if(g(i, j)) res(i, j)-=0.4;
+				if(n_adj==2) res(i, j)+=1;
+				else if(n_adj>=3) res(i,j)+=1;
+				if(g(i, j)) res(i, j)-=1;
 			} else if((-daynum+3000)%3==(i-j+3001)%3){
 				if(n_adj==2) res(i,j)+=0.2;
 				else if(n_adj>=3) res(i,j)+=0.3;
 				if(g(i, j)) res(i, j)-=0.15;
 			}
+
 			int st = 0;
 			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) st = 2*st+g(i+k,j+l); 
 			if((-daynum+3000)%3==(i-j+3000)%3) st = 2*st+1;
 			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
 			else continue;
-			if(tot[st]>5) res(i,j) = 1.0*freq[st]/tot[st];
+			if(tot[st]>1) res(i,j) = 1.0*freq[st]/tot[st];
+			else cout << "?";
+
 		}
 	}
 	res.fix();
 	return res;
+
 }
 
 const int n_sol = 8;
@@ -210,8 +218,10 @@ double check(int sol_num){
 	double res = 0;
 	//for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
 	//return res/D;
-	for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
-	return res/((D+1)/2);
+	//for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
+	//return res/((D+1)/2);
+	for(int i = 21; i<=D; i++) res+=(check(i, sol_num));
+	return res/(D-20);
 
 }
 
@@ -246,6 +256,7 @@ int main(){
 
 	cout << fixed << setprecision(3) << get_next(D, best) << endl;
 
+	return 0;
 	for(int i = 1; i<=D; i++){
 		stringstream image_name;
 		image_name << "images\\" << i << ".png";

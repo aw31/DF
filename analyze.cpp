@@ -6,6 +6,7 @@
 #include <sstream>
 using namespace std;
 
+const int D = 25;
 int daynum, freq[131072] = {}, tot[131072] = {};
 
 void check(int day){
@@ -43,8 +44,7 @@ void check(int day){
 int main(){
 
 	freopen("solve7-1.txt", "w", stdout);
-	int D = 23;
-	for(int i = 2; i<=D; i+=2) check(i);
+	for(int i = 1; i<=20; i++) check(i);
 	for(int i = 0; i<131072; i++) cout << freq[i] << " " << tot[i] << '\n';
 
 }
