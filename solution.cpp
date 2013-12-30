@@ -220,10 +220,10 @@ double check(int day, int sol_num){
 double check(int sol_num){
 
 	double res = 0;
-	for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
-	return res/D;
-	//for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
-	//return res/((D+1)/2);
+	for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
+	return res/((D+1)/2);
+	//for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
+	//return res/D;
 
 }
 
