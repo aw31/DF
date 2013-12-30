@@ -167,7 +167,7 @@ grid solve7(grid g){
 			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
 			else continue;
 
-			if(tot_7[st]>8){
+			if(tot_7[st]>9){
 				res(i,j) = 1.0*freq_7[st]/tot_7[st];
 			} else {
 				res(i,j) = s6(i,j);
@@ -188,7 +188,7 @@ grid solve8(grid g){
 			for(int k = -1; k<2; k++){
 				for(int l = -1; l<2; l++) n_adj+=g(i+k,j+l), n_adj_new+=s7(i+k,j+l);
 			}
-			if(n_adj-n_adj_new>2) s7(i,j) = sqrt(s7(i,j));
+			if(n_adj-n_adj_new>1.5) s7(i,j) = sqrt(s7(i,j));
 		}
 	}
 	return s7;
@@ -220,10 +220,10 @@ double check(int day, int sol_num){
 double check(int sol_num){
 
 	double res = 0;
-	//for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
-	//return res/D;
-	for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
-	return res/((D+1)/2);
+	for(int i = 1; i<=D; i++) res+=(check(i, sol_num));
+	return res/D;
+	//for(int i = 1; i<=D; i+=2) res+=(check(i, sol_num));
+	//return res/((D+1)/2);
 
 }
 
@@ -272,7 +272,7 @@ int main(){
 
 	// a star indicates that the day was used in the training set
 	cout << "recent scores: " << endl;
-	for(int i = D-9; i<=D; i++) cout << "    " << check(i, best) << (i%2?"":"*") << endl;
+	for(int i = D-9; i<=D; i++) cout << "    " << check(i, best) << endl;
 	cout << endl;
 
 	cout << "today's submission: " << endl;

@@ -7,7 +7,7 @@
 #include <sstream>
 using namespace std;
 
-const int D = 26;
+const int D = 28;
 int daynum, freq[1024] = {}, tot[1024] = {};
 grid start[40], ans[40];
 
@@ -15,7 +15,7 @@ grid start[40], ans[40];
 void load(int day){
 
 	stringstream file;
-	file << "data\\d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
+	file << "data/d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
 	freopen(file.str().c_str(), "r", stdin);
 	string s[30];
 	for(int i = 0; i<30; i++) cin >> s[i];
@@ -81,10 +81,8 @@ int main(){
 		cout << '\n';
 	}
 
-	/*
 	freopen("solve7.txt", "w", stdout);
 	for(int i = 2; i<=D; i+=2) check(i);
 	for(int i = 0; i<1024; i++) cout << freq[i] << " " << tot[i] << '\n';
-	*/
 
 }

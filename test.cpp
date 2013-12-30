@@ -10,7 +10,7 @@
 using namespace std;
 
 const double eps = 1e-9;
-const int D = 26;
+const int D = 28;
 int daynum;
 
 grid start[40], ans[40];
