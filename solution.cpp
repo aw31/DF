@@ -179,9 +179,25 @@ grid solve7(grid g){
 
 }
 
+grid solve8(grid g){
 
-const int n_sol = 8;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7};
+	grid res, s7 = solve7(g);
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<30; j++){
+			double n_adj = 0, n_adj_new = 0;
+			for(int k = -1; k<2; k++){
+				for(int l = -1; l<2; l++) n_adj+=g(i+k,j+l), n_adj_new+=s7(i+k,j+l);
+			}
+			if(n_adj-n_adj_new>2) s7(i,j) = sqrt(s7(i,j));
+		}
+	}
+	return s7;
+
+}
+
+
+const int n_sol = 9;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7, solve8};
 
 grid start[40], ans[40];
 

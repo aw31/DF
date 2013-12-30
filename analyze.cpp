@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdio>
+#include <iomanip>
 #include <set>
 #include <sstream>
 using namespace std;
@@ -57,11 +58,28 @@ void check(int day){
 
 }
 
+int p_freq[30][30][3] = {}, p_tot[3] = {};
+void prob(int day){
+	p_tot[day%3]++;
+	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++){
+		p_freq[i][j][day%3]+=ans[day](i,j);
+	}
+}
+
 int main(){
 
 	for(int i = 1; i<=D; i++) load(i);
 
-	for(int i = 1; i<=D; i++) mod3(i);
+	cout << fixed << setprecision(3);
+	//for(int i = 1; i<=D; i++) mod3(i);
+	for(int i = 1; i<=D; i++) prob(i);
+
+	for(int i = 0; i<30; i++){
+		for(int j = 0; j<30; j++){
+			cout << 1.0*p_freq[i][j][0]/p_tot[0] << " ";
+		}
+		cout << '\n';
+	}
 
 	/*
 	freopen("solve7.txt", "w", stdout);
