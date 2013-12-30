@@ -14,7 +14,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 26;
+const int D = 28;
 
 int daynum;
 
@@ -139,11 +139,11 @@ grid solve6(grid g){
 			int n_adj = 0;
 			for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if(k||l) n_adj+=g(i+k,j+l)+eps;
 			if((-daynum+3000)%3==(i-j+3000)%3){
-				if(n_adj==2) res(i, j) = 0.85-g(i,j)*0.4;
-				else if(n_adj>=3) res(i,j) = 0.95-g(i,j)*0.5;
+				if(n_adj==2) res(i, j) = 0.9-g(i,j)*0.45;
+				else if(n_adj>=3) res(i,j) = 0.95-g(i,j)*0.45;
 			} else if((-daynum+3000)%3==(i-j+3001)%3){
-				if(n_adj==2) res(i, j) = 0.2-g(i,j)*0.2;
-				else if(n_adj>=3) res(i,j) = 0.3-g(i,j)*0.3;
+				if(n_adj==2) res(i, j) = 0.2-g(i,j)*0.15;
+				else if(n_adj>=3) res(i,j) = 0.3-g(i,j)*-0.2;
 			}
 		}
 	}
@@ -167,7 +167,7 @@ grid solve7(grid g){
 			else if((-daynum+3000)%3==(i-j+3001)%3) st*=2;
 			else continue;
 
-			if(tot_7[st]>4){
+			if(tot_7[st]>8){
 				res(i,j) = 1.0*freq_7[st]/tot_7[st];
 			} else {
 				res(i,j) = s6(i,j);
@@ -215,7 +215,7 @@ double check(int sol_num){
 void load(int day){
 
 	stringstream file;
-	file << "data\\d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
+	file << "data/d" << (day<10?"0":"") << day << (day+1<10?"0":"") << day+1 << ".txt";
 	freopen(file.str().c_str(), "r", stdin);
 	string s[30];
 	for(int i = 0; i<30; i++) cin >> s[i];
@@ -265,7 +265,7 @@ int main(){
 
 	for(int i = 1; i<=D; i++){
 		stringstream image_name;
-		image_name << "images\\" << i << ".png";
+		image_name << "images/" << i << ".png";
 		draw(get_next(i, best), image_name.str());
 	}
 
