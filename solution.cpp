@@ -14,7 +14,7 @@ typedef pair<int,int> pii;
 typedef grid (*solve_func) (grid g);
 
 const double eps = 1e-9;
-const int D = 28;
+const int D = 29;
 
 int daynum;
 
@@ -191,13 +191,39 @@ grid solve8(grid g){
 			if(n_adj-n_adj_new>1.5) s7(i,j) = sqrt(s7(i,j));
 		}
 	}
+    double sum = 0.0;
+    for(int i = 0; i <30; i++)
+        for (int j=0;j<30;j++)
+            sum+=s7(i, j);
 	return s7;
+}
+
+grid solve9(grid g){
+
+	grid res, s8 = solve8(g);
+    double sum = 0.0;
+    for(int i = 0; i < 30; i++)
+        for (int j = 0; j < 30; j++)
+            sum+=s8(i, j);
+    if(sum < 100){
+        vector<pii> available;
+        for(int i = 0; i < 30; i++)
+            for (int j = 0; j < 30; j++)
+                if(s8(i, j) < 1.0)
+                    available.push_back(make_pair(i, j));
+        for(int i=0; i<available.size();i++)
+            s8(available[i].first,available[i].second)*= 100.0/sum;
+    } else if(sum>100){
+        for(int i = 0; i < 30; i++)
+            for (int j = 0; j < 30; j++)
+                s8(i, j) *= 100.0/sum;
+    }
+	return s8;
 
 }
 
-
-const int n_sol = 9;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7, solve8};
+const int n_sol = 10;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7, solve8, solve9};
 
 grid start[40], ans[40];
 
@@ -276,7 +302,7 @@ int main(){
 	cout << endl;
 
 	cout << "today's submission: " << endl;
-	cout << fixed << setprecision(3) << get_next(D, best) << endl;
+	cout << fixed << setprecision(10) << get_next(D, best) << endl;
 	cout << endl;
 
 	for(int i = 1; i<=D; i++){

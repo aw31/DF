@@ -7,7 +7,7 @@
 #include <sstream>
 using namespace std;
 
-const int D = 28;
+const int D = 29;
 int daynum, freq[1024] = {}, tot[1024] = {};
 grid start[40], ans[40];
 
