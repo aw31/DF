@@ -195,9 +195,35 @@ grid solve8(grid g){
 
 }
 
+grid solve9(grid g){
 
-const int n_sol = 9;
-solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7, solve8};
+	double arr[] = {0, 0.3, 0.8, 0.9, 0.5, 0.15, 0, 0, 0};
+	grid res, adj, s7 = solve7(g);
+	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++){
+		for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) adj(i,j)+=g(i+k,j+l);
+	}
+	for(int i = 0; i<30; i++) for(int j = 0; j<30; j++){
+		if(!g(i,j)) continue;
+		double p = 1;
+		for(int k = -1; k<2; k++) for(int l = -1; l<2; l++){
+			if((-daynum+3000)%3==(i+k-j-l+3000)%3){
+				p*=(1-arr[(int)adj(i+k,j+l)]);
+			}
+		}
+		if(abs(p)>1) continue;
+		int alt = 0;
+		for(int k = -1; k<2; k++) for(int l = -1; l<2; l++) if((-daynum+3000)%3==(i+k-j-l+3001)%3) alt++;
+		for(int k = -1; k<2; k++) for(int l = -1; l<2; l++){
+			if((-daynum+3000)%3==(i+k-j-l+3001)%3) s7(i+k,j+l)+=p/alt;
+		}
+	}
+	return s7;
+
+}
+
+
+const int n_sol = 10;
+solve_func sol[n_sol] = {solve0, solve1, solve2, solve3, solve4, solve5, solve6, solve7, solve8, solve9};
 
 grid start[40], ans[40];
 
